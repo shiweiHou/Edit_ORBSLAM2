@@ -19,7 +19,7 @@
 */
 
 #include "Viewer.h"
-#include <pangolin/pangolin.h>
+//#include <pangolin/pangolin.h>
 
 #include <mutex>
 
@@ -55,7 +55,7 @@ void Viewer::Run()
 {
     mbFinished = false;
     mbStopped = false;
-
+/*
     pangolin::CreateWindowAndBind("ORB-SLAM2: Map Viewer",1024,768);
 
     // 3D Mouse handler requires depth testing to be enabled
@@ -85,13 +85,28 @@ void Viewer::Run()
             .SetHandler(new pangolin::Handler3D(s_cam));
 
     pangolin::OpenGlMatrix Twc;
-    Twc.SetIdentity();
+    Twc.SetIdentity();*/
 
     cv::namedWindow("ORB-SLAM2: Current Frame");
 
     bool bFollow = true;
     bool bLocalizationMode = false;
+    while (1) {
+	cv::Mat im = mpFrameDrawer->DrawFrame();
+        cv::imshow("ORB-SLAM2: Current Frame",im);
+        cv::waitKey(mT);
+        if(Stop())
+        {
+            while(isStopped())
+            {
+                usleep(3000);
+            }
+        }
 
+        if(CheckFinish())
+            break;
+    }
+/*
     while(1)
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -163,7 +178,7 @@ void Viewer::Run()
 
         if(CheckFinish())
             break;
-    }
+    }*/
 
     SetFinish();
 }
